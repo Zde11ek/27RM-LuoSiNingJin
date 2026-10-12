@@ -23,5 +23,5 @@
 ## 文档导航
 - [每日进度、问题](progress.md)
 - [共识](decisions.md)
-- [DDL](tasks.md)
+- [DDL](ddl.md)
 - [采购清单](bom.md)
