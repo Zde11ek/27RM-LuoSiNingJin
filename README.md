@@ -25,3 +25,4 @@
 - [共识](decisions.md)
 - [DDL](ddl.md)
 - [采购清单](bom.md)
+- [个人计划](plans/)
