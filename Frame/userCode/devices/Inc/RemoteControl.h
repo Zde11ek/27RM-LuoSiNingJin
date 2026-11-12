@@ -35,13 +35,14 @@ typedef struct {
     keyboard_t key;
 }RC_ctrl_t;
 typedef struct {
-    float left_col,left_rol;
-    float right_col,right_rol;
-    SWITCH_STATE_E sLeft;
-    uint32_t pat;
-    SWITCH_STATE_E sRight;
+    float left_col, left_rol;
+    float right_col, right_rol;
+    SWITCH_STATE_E sLeft;   // SB (三档)
+    SWITCH_STATE_E sRight;  // SC (三档)
+    bool switch_SA;         // 新增：SA (true: 上档, false: 下档)
+    bool switch_SD;         // 新增：SD (true: 上档, false: 下档)
     int16_t optional[2];
-}RC_Info_t;
+} RC_Info_t;
 /*类型定义----------------------------------------------------------------*/
 class RemoteControl : public Device {
 public:
