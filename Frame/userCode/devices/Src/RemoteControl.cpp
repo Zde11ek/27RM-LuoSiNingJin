@@ -72,6 +72,9 @@ void RemoteControl::sbus_to_rc(const volatile uint8_t *sbus_buf) {
     rcInfo.left_col  = ch1 / 671.0f; 
     rcInfo.right_col = ch2 / 671.0f; 
     rcInfo.left_rol  = ch3 / 671.0f; 
+    // 阈值以 1000 为界（天地飞两档开关通常在 300~1700 之间跳变）
+rcInfo.switch_SA = (rc_ctrl.rc.optional[0] < 1000); // 向上拨数值小，设为 true
+rcInfo.switch_SD = (rc_ctrl.rc.optional[1] < 1000);
     
     // 4. 修复拨杆极性反转问题（天地飞拨杆向上为低数值，向下为高数值）
     if (rc_ctrl.rc.s[0] < 500) rcInfo.sLeft = UP_POS;
