@@ -51,7 +51,6 @@ void RemoteControl::sbus_to_rc(const volatile uint8_t *sbus_buf) {
     rc_ctrl.rc.ch[3] = (sbus_buf[5] >> 1 | sbus_buf[6] << 7) & 0x07ff;  // CH4 (J4)
     rc_ctrl.rc.s[0] = (sbus_buf[6] >> 4 | sbus_buf[7] << 4) & 0x07ff;   // CH5 (SB)
     rc_ctrl.rc.s[1] = (sbus_buf[7] >> 7 | sbus_buf[8] << 1 | sbus_buf[9] << 9) & 0x07ff;   // CH6 (SC)
-    
     rc_ctrl.rc.optional[0] = (sbus_buf[9] >> 2 | sbus_buf[10] << 6) & 0x07ff;   // CH7
     rc_ctrl.rc.optional[1] = (sbus_buf[10] >> 5 | sbus_buf[11] << 3) & 0x07ff;  // CH8
     
@@ -61,7 +60,7 @@ void RemoteControl::sbus_to_rc(const volatile uint8_t *sbus_buf) {
     int16_t ch2 = rc_ctrl.rc.ch[2] - RC_CH_VALUE_OFFSET;
     int16_t ch3 = rc_ctrl.rc.ch[3] - RC_CH_VALUE_OFFSET;
 
-    // --- 核心修复：加入死区过滤，防止底盘狂转 ---
+    //加入死区过滤，防止底盘狂转
     if(ch0 > -15 && ch0 < 15) ch0 = 0;
     if(ch1 > -15 && ch1 < 15) ch1 = 0;
     if(ch2 > -15 && ch2 < 15) ch2 = 0;
@@ -72,11 +71,11 @@ void RemoteControl::sbus_to_rc(const volatile uint8_t *sbus_buf) {
     rcInfo.left_col  = ch1 / 671.0f; 
     rcInfo.right_col = ch2 / 671.0f; 
     rcInfo.left_rol  = ch3 / 671.0f; 
-    // 阈值以 1000 为界（天地飞两档开关通常在 300~1700 之间跳变）
+    // 阈值以 1000 为界
 rcInfo.switch_SA = (rc_ctrl.rc.optional[0] < 1000); // 向上拨数值小，设为 true
 rcInfo.switch_SD = (rc_ctrl.rc.optional[1] < 1000);
     
-    // 4. 修复拨杆极性反转问题（天地飞拨杆向上为低数值，向下为高数值）
+    //天地飞拨杆向上为低数值，向下为高数值
     if (rc_ctrl.rc.s[0] < 500) rcInfo.sLeft = UP_POS;
     else if (rc_ctrl.rc.s[0] > 1500) rcInfo.sLeft = DOWN_POS;
     else rcInfo.sLeft = MID_POS;
